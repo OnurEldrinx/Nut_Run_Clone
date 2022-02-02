@@ -45,6 +45,14 @@ public class Stack : MonoBehaviour
 
         }
 
+        if(stackList.Count == 0)
+        {
+
+            stackParentCollider.size = new Vector3(1.5f, 1.5f, 1);
+            stackParentCollider.center = new Vector3(0, 0, 0);
+
+        }
+
     }
 
     public void WaveMovement()
@@ -67,6 +75,9 @@ public class Stack : MonoBehaviour
         if(other.tag == "Nut")
         {
 
+            Nut.Instance.currentNutModel = Nut.Instance.NutModels[0];
+
+            GameManager.Instance.money += 10;
 
             //other.transform.rotation = stackParent.transform.rotation;
             other.transform.parent = previous.transform;

@@ -31,11 +31,12 @@ public class NutBreaker : MonoBehaviour
 
         }
 
-        if(other.tag == "Nut")
+        if(other.tag == "Nut" && other.GetComponent<Nut>().isCracked == false)
         {
 
 
             other.GetComponent<Nut>().isCracked = true;
+            GameManager.Instance.money++;
 
         }
 

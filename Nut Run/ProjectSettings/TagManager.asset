@@ -11,6 +11,10 @@ TagManager:
   - Packaged
   - StackParent
   - Breaker
+  - NutPack
+  - CDoor
+  - Packer
+  - Puncher
   layers:
   - Default
   - TransparentFX

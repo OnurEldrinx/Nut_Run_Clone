@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public Image swipeToPlay;
 
     public Text levelNumber;
+
+    public Text moneyText;
+    public int money;
+
     private void Awake()
     {
          
@@ -44,6 +48,8 @@ public class GameManager : MonoBehaviour
             swipeToPlay.gameObject.SetActive(false);
 
         }
+
+        moneyText.text = "" + money;
 
     }
 }
