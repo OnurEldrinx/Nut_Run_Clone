@@ -15,6 +15,10 @@ TagManager:
   - CDoor
   - Packer
   - Puncher
+  - FxTemporaire
+  - Missile
+  - FireMachine
+  - ObstacleHand
   layers:
   - Default
   - TransparentFX

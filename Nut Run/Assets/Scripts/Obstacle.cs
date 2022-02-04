@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +21,8 @@ public class Obstacle : MonoBehaviour
 
         }
 
+
+        // Puncher
         if (other.tag == "Nut" && this.gameObject.tag == "Puncher")
         {
 
@@ -69,6 +61,60 @@ public class Obstacle : MonoBehaviour
 
 
         }
+
+
+        //Fire Machine
+        if(other.tag == "Nut" && this.gameObject.tag == "FireMachine")
+        {
+
+
+            if(other.gameObject.GetComponent<Nut>().isChocolate && !other.gameObject.GetComponent<Nut>().isNutCelled && !other.gameObject.GetComponent<Nut>().isPackaged)
+            {
+
+                Nut.Instance.currentNutModel.SetActive(false);
+
+                Nut.Instance.currentNutModel = Nut.Instance.NutModels[1];
+
+                Nut.Instance.currentNutModel.SetActive(true);
+
+                other.gameObject.GetComponent<Nut>().isChocolate = false;
+                GameManager.Instance.money -= 5;
+
+            }
+
+        }
+
+        //Obstacle Hand
+        if(other.tag == "Nut" && this.gameObject.tag == "ObstacleHand")
+        {
+
+            int counter = 0;
+
+
+            for (int i = Stack.Instance.stackList.Count - 1; i >= 0; i--)
+            {
+
+                Stack.Instance.stackList[i].SetActive(false);
+                Stack.Instance.stackList[i].transform.parent = null;
+                Stack.Instance.stackList.RemoveAt(i);
+                counter++;
+
+            }
+
+            if (Stack.Instance.stackParentCollider.size.z >= (counter * other.GetComponent<BoxCollider>().size.z))
+            {
+                Stack.Instance.stackParentCollider.size -= new Vector3(0, 0, counter * other.GetComponent<BoxCollider>().size.z);
+                Stack.Instance.stackParentCollider.center -= new Vector3(0, 0, counter * (other.GetComponent<BoxCollider>().size.z / 2));
+            }
+
+            
+
+            Stack.Instance.previous = Stack.Instance.stackParent;
+
+            GameManager.Instance.money -= counter * 1;
+
+        }
+
 
     }
 
