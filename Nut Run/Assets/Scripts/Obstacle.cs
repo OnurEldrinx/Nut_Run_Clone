@@ -111,7 +111,7 @@ public class Obstacle : MonoBehaviour
 
             Stack.Instance.previous = Stack.Instance.stackParent;
 
-            GameManager.Instance.money -= counter * 1;
+            GameManager.Instance.money = 0;
 
         }
 

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     public bool isGameStarted;
+    public bool isLevelFinished;
 
     public Image swipeToPlay;
 
@@ -19,10 +20,8 @@ public class GameManager : MonoBehaviour
     public Text moneyText;
     public int money;
 
-    public int totallevelScore;
-    public TextMeshProUGUI savedMoneyText;
+    
 
-    public bool isLevelFinished;
     private void Awake()
     {
          
@@ -56,9 +55,7 @@ public class GameManager : MonoBehaviour
 
         moneyText.text = "" + money;
 
-        if (isLevelFinished)
-            savedMoneyText.text = "" + money;
-            totallevelScore = money;
+                    
 
     }
 
@@ -66,8 +63,6 @@ public class GameManager : MonoBehaviour
     {
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        DataManager.Instance.totalMoney += GameManager.Instance.money;
-        savedMoneyText.text = "" + DataManager.Instance.totalMoney;
 
     }
 }

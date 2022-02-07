@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.UI;
 
 public class Finish : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class Finish : MonoBehaviour
     public Cinemachine.CinemachineVirtualCamera finishCam;
     public GameObject panel;
     public TextMeshProUGUI panelMoneyText;
+
+    public Image fullHeart;
+
+    public bool isTotalUpdated;
     private void Awake()
     {
 
@@ -40,9 +45,25 @@ public class Finish : MonoBehaviour
         Debug.Log((Mathf.RoundToInt(GameManager.Instance.money / 100) * 100).ToString());
         finishMoney.transform.parent = GameObject.Find("Player").transform;
         finishMoney.transform.localPosition = new Vector3(0, 0.4f, 0);
-        GameObject.Find("Player").transform.DOMoveY(GameObject.Find((Mathf.RoundToInt(GameManager.Instance.money / 100)*100).ToString()).transform.position.y ,GameManager.Instance.money / 200).OnComplete(()=>panel.gameObject.SetActive(true));
-        panelMoneyText.text = "" + GameManager.Instance.money;
+
+        if (GameObject.Find((Mathf.RoundToInt(GameManager.Instance.money / 100) * 100).ToString()) != null)
+        {
+
+            GameObject.Find("Player").transform.DOMoveY(GameObject.Find((Mathf.RoundToInt(GameManager.Instance.money / 100) * 100).ToString()).transform.position.y, GameManager.Instance.money / 200).OnComplete(() => panel.gameObject.SetActive(true));
+        
+        }
+        panelMoneyText.text = PlayerPrefs.GetInt("TotalMoney").ToString();
+
+        if(!isTotalUpdated)
+            PlayerPrefs.SetInt("TotalMoney", PlayerPrefs.GetInt("TotalMoney") + GameManager.Instance.money);
+            fullHeart.DOFillAmount((float)GameManager.Instance.money / 1000, 5);
+            isTotalUpdated = true;
+
+
+        
+
+
     }
 
-   
+
 }
