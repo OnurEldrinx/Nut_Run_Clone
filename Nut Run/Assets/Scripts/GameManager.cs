@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class GameManager : MonoBehaviour
     public Text moneyText;
     public int money;
 
+    public int totallevelScore;
+    public TextMeshProUGUI savedMoneyText;
+
+    public bool isLevelFinished;
     private void Awake()
     {
          
@@ -50,6 +55,19 @@ public class GameManager : MonoBehaviour
         }
 
         moneyText.text = "" + money;
+
+        if (isLevelFinished)
+            savedMoneyText.text = "" + money;
+            totallevelScore = money;
+
+    }
+
+    public void NextLevel()
+    {
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        DataManager.Instance.totalMoney += GameManager.Instance.money;
+        savedMoneyText.text = "" + DataManager.Instance.totalMoney;
 
     }
 }

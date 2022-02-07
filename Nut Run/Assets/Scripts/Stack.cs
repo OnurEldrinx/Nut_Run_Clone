@@ -14,6 +14,9 @@ public class Stack : MonoBehaviour
     public BoxCollider stackParentCollider;
 
 
+
+    public List<GameObject> packagedNuts;
+
     private void Awake()
     {
         
@@ -38,7 +41,7 @@ public class Stack : MonoBehaviour
     void Update()
     {
 
-        if (stackList.Count > 1)
+        if (stackList.Count > 1 && !GameManager.Instance.isLevelFinished)
         {
 
             WaveMovement();
@@ -75,30 +78,52 @@ public class Stack : MonoBehaviour
         if(other.tag == "Nut")
         {
 
-            Nut.Instance.currentNutModel = Nut.Instance.NutModels[0];
-
-            GameManager.Instance.money += 10;
-
-            //other.transform.rotation = stackParent.transform.rotation;
-            other.transform.parent = previous.transform;
-
-            if (stackList.Count == 0)
+            if (other.gameObject.GetComponent<Nut>().isCollected == false)
             {
-                other.transform.localPosition = new Vector3(0, 0, 0);
+                Nut.Instance.currentNutModel = Nut.Instance.NutModels[0];
 
-            }
-            else
-            {
-                other.transform.localPosition = new Vector3(0, 0, previous.transform.localScale.z);
-                stackParentCollider.size += new Vector3(0,0,other.GetComponent<BoxCollider>().size.z);
-                stackParentCollider.center += new Vector3(0,0, other.GetComponent<BoxCollider>().size.z / 2);
-            }
+                GameManager.Instance.money += 10;
 
-            previous = other.gameObject;
-            stackList.Add(other.gameObject);
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                //other.transform.rotation = stackParent.transform.rotation;
+                other.transform.parent = previous.transform;
+
+                if (stackList.Count == 0)
+                {
+                    other.transform.localPosition = new Vector3(0, 0, 0);
+
+                }
+                else
+                {
+                    other.transform.localPosition = new Vector3(0, 0, previous.transform.localScale.z);
+                    stackParentCollider.size += new Vector3(0, 0, other.GetComponent<BoxCollider>().size.z);
+                    stackParentCollider.center += new Vector3(0, 0, other.GetComponent<BoxCollider>().size.z / 2);
+                }
+
+                previous = other.gameObject;
+                stackList.Add(other.gameObject);
+                other.gameObject.GetComponent<Nut>().isCollected = true;
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            }
 
         }
+
+
+        if(other.tag == "FinishLine")
+        {
+
+            GameManager.Instance.isLevelFinished = true;
+
+            stackParentCollider.enabled = false;
+
+            for(int i = 0; i < stackList.Count; i++)
+            {
+
+                stackList[i].GetComponent<BoxCollider>().enabled = true;
+
+            }
+
+        }
+
 
     }
 

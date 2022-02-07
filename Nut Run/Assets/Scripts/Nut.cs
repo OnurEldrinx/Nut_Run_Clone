@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Nut : MonoBehaviour
 {
@@ -13,10 +14,22 @@ public class Nut : MonoBehaviour
     public bool isNutCelled;
     public bool isPackaged;
 
+    public bool isCrackedDone;
+    public bool isChocoDone;
+
+    public bool isCelledDone;
+
+    public bool isPackagedDone;
+
+    public bool isCollected;
+
+    public bool isHeartBoxed;
+
     private List<GameObject> cells;
 
     public GameObject[] NutModels;
     public GameObject currentNutModel;
+
 
     private void Awake()
     {
@@ -61,7 +74,6 @@ public class Nut : MonoBehaviour
             foreach (GameObject c in cells)
             {
 
-
                 c.transform.parent = null;
 
             }
@@ -71,18 +83,14 @@ public class Nut : MonoBehaviour
             for (int i = 0; i < cells.Count; i++)
             {
 
-                
-                /*cells[i].GetComponent<SphereCollider>().isTrigger = false;
-                cells[i].GetComponent<Rigidbody>().useGravity = true;
-                cells[i].GetComponent<Rigidbody>().AddExplosionForce(0.2f, nut.transform.position,0.2f);*/
-
                 StartCoroutine(Cell(2f,cells[i]));
 
             }
 
             currentNutModel = NutModels[1];
             currentNutModel.SetActive(true);
-            
+
+
         }
 
 
@@ -95,6 +103,8 @@ public class Nut : MonoBehaviour
 
             currentNutModel.SetActive(true);
 
+            isChocoDone = true;
+
         }
 
         if (isNutCelled)
@@ -105,6 +115,8 @@ public class Nut : MonoBehaviour
             currentNutModel = NutModels[3];
 
             currentNutModel.SetActive(true);
+
+            isCelledDone = true;
 
 
         }
@@ -118,6 +130,8 @@ public class Nut : MonoBehaviour
 
             currentNutModel.SetActive(true);
 
+            isPackagedDone = true;
+
         }
 
     }
@@ -130,8 +144,55 @@ public class Nut : MonoBehaviour
         g.GetComponent<Rigidbody>().AddExplosionForce(0.2f, nut.transform.position, 0.2f);
         yield return new WaitForSeconds(time);
         g.SetActive(false);
-        
-        
+        isCrackedDone = true;
+
+
 
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        
+        if(other.tag == "FinishLine")
+        {
+
+            
+
+            if (!isPackaged)
+            {
+
+                gameObject.SetActive(false);
+                Stack.Instance.stackList.Remove(this.gameObject);
+            }
+            else
+            {
+
+                if (GameObject.Find("Finish").GetComponent<Finish>().counter < GameObject.Find("Finish").GetComponent<Finish>().heartBoxes.Count)
+                {
+                    transform.parent = null;
+                    transform.DOMove(GameObject.Find("Finish").GetComponent<Finish>().heartBoxes[GameObject.Find("Finish").GetComponent<Finish>().counter].transform.localPosition + new Vector3(0, 0.075f, 0), 0.5f).OnComplete(() => Stack.Instance.stackList.Remove(this.gameObject));
+                    //Debug.Log(GameObject.Find("Finish").GetComponent<Finish>().heartBoxes[GameObject.Find("Finish").GetComponent<Finish>().heartBoxes.Count - 1].transform.localPosition);
+                    //transform.position = GameObject.Find("Finish").GetComponent<Finish>().heartBoxes[GameObject.Find("Finish").GetComponent<Finish>().heartBoxes.Count - 1].transform.position;
+                    //GameObject.Find("Finish").GetComponent<Finish>().heartBoxes.RemoveAt(GameObject.Find("Finish").GetComponent<Finish>().heartBoxes.Count-1);
+                    GameObject.Find("Finish").GetComponent<Finish>().counter++;
+                    GameManager.Instance.money += 50;
+
+                }
+                else
+                {
+
+                    gameObject.SetActive(false);
+                    Stack.Instance.stackList.Remove(this.gameObject);
+
+                }
+
+
+
+            }
+
+        }
+
+    }
+
+
 }
