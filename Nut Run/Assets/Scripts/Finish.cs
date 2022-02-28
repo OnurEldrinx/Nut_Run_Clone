@@ -19,6 +19,7 @@ public class Finish : MonoBehaviour
 
     public Image fullHeart;
 
+
     public bool isTotalUpdated;
     private void Awake()
     {
@@ -38,8 +39,6 @@ public class Finish : MonoBehaviour
     }
     public void FinishScreen()
     {
-
-        GameObject.Find("PriceTag").GetComponent<PriceTag>().priceTagImg.gameObject.SetActive(false);
         
         finishCam.gameObject.SetActive(true);
         Debug.Log((Mathf.RoundToInt(GameManager.Instance.money / 100) * 100).ToString());
@@ -60,7 +59,6 @@ public class Finish : MonoBehaviour
             isTotalUpdated = true;
 
 
-        
 
 
     }

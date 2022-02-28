@@ -65,12 +65,25 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
 
-        AutoMoveForward();
 
 
         transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
 
+        ClampPosition();
 
 
     }
+
+    private void ClampPosition()
+    {
+
+        AutoMoveForward();
+
+        float c = Mathf.Clamp(transform.position.x, -1f, 1f);
+
+        transform.position = new Vector3(c, transform.position.y, transform.position.z);
+
+
+    }
+
 }

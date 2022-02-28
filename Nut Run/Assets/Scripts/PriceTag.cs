@@ -15,6 +15,13 @@ public class PriceTag : MonoBehaviour
 
         Vector3 p = Camera.main.WorldToScreenPoint(this.transform.position);
         priceTagImg.transform.position = p;
-        
+
+        if (GameManager.Instance.isLevelFinished)
+        {
+
+            priceTagImg.gameObject.SetActive(false);
+
+        }
+
     }
 }

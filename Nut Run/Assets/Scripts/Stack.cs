@@ -111,6 +111,8 @@ public class Stack : MonoBehaviour
         if(other.tag == "FinishLine")
         {
 
+
+
             GameManager.Instance.isLevelFinished = true;
 
             stackParentCollider.enabled = false;
@@ -121,6 +123,9 @@ public class Stack : MonoBehaviour
                 stackList[i].GetComponent<BoxCollider>().enabled = true;
 
             }
+
+
+
 
         }
 
